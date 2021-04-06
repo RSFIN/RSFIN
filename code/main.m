@@ -1,56 +1,53 @@
 clc,clear,clf
 
-NNN = 33;
-ExpMRE = 20;
-for N_Data = 10:10
+NNN = 6;% Initial number of rules
+ExpMRE = 15;% Expect MRE (used to eliminate bad experiments)
+for N_Data = 1:11
     [X, Y, CluRe, DataSetName, mf] = Setup(N_Data); % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'}
-    SCORE = csvread(['..\user_data\result_',DataSetName,'.csv']);
+    SCORE = csvread(['..\user_data\result_',DataSetName,'.csv']);% Read log file
     
-    
-    %     pos = find(Y<5);
+    %     pos = find(Y<5); % Performance separation experiment
     %     X = X(:,pos);
     %     Y = Y(pos);
-    if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7
+    if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7 %Randomly compress experiments with large amounts of data
         pos = randperm(size(X,2));
         X = X(:,pos(1:2000));
         Y = Y(pos(1:2000));
     end
-    if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7||N_Data == 8
-        
+    if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7||N_Data == 8 %Sampling number setting
         k = 10;
         p = 10;
     else
         k = 2;
         p = 2;
     end
-    MMM = [];
-    for mmmm = 1:1
-        %                 if SCORE(mmmm, 2) <= ExpMRE
-        %                     continue;
-        %                 end
+    MMM = []; % MRE
+    for mmmm = 1:30
+        
         tic
-        mre = 10000;
-        while mre>=ExpMRE
+        mre = 10000; % Initialize mre
+        while mre>=ExpMRE %Eliminate bad experiments
             SCORE(mmmm, 1) = mmmm;
             [n, N] = size(X);
             Testpos = 1:N;
             
-            [Valpos, Testpos] = Sample(Testpos,k*n);
-            [TT, Testpos] = Sample(Testpos,p*n);
+            [Valpos, Testpos] = Sample(Testpos,k*n);% Validation set sampling
+            [TT, Testpos] = Sample(Testpos,p*n);% Training set sampling
             
             ValX = X(:,Valpos); ValY = Y(Valpos);
             TrainX = X(:,TT); TrainY = Y(TT);
-            TestX = X(:,Testpos);TestY = Y(Testpos);
+            TestX = X(:,Testpos);TestY = Y(Testpos);% Test set
             
             disp([DataSetName, ':', num2str(mmmm)]);
+            % Rule search
             [QMR, S] = ASFIN(X,mf,CluRe,NNN,ValX,ValY,TrainX,TrainY);
-            
-            
+            % Learn
             [mf,Ac,M] = ANFIS([TrainX, ValX],[TrainY,ValY],mf,QMR,100);
+            % Validation
             yp = NetWork(TestX,mf,QMR,Ac);
             mre = MRE(yp, TestY);
         end
-        MMM = [MMM; [S,M]];
+        MMM = [MMM; [S,M]]; %MRE
         SCORE(mmmm, 2) = mre;
         SCORE(mmmm, 3) = N - length(Testpos);
         SCORE(mmmm, 4) = size(QMR,2);
@@ -58,11 +55,10 @@ for N_Data = 10:10
         csvwrite(['..\user_data\result_',DataSetName,'.csv'],SCORE);
     end
 end
-Plot_Test(yp, TestY, DataSetName, mre, QMR, N - length(Testpos));
 mean(SCORE(:,2))
 std(SCORE(:,2))
 sum(SCORE(:,5))
-%%
+%% boxplot
 Data = [];
 for N_Data = 1:11
     if N_Data == 5|| N_Data == 3
@@ -73,7 +69,4 @@ for N_Data = 1:11
     
     Data = [Data,  SCORE(:,2)];
 end
-%%
-clf
-clc
 notBoxPlot(Data,'jitter',0.6);

@@ -1,4 +1,6 @@
 function [yp] = NetWork(X,mf,MR,Ac)
+
+% Use network parameters for calculations.
 % X: n*1
 % F: s*1
 % Aux: n*1
@@ -6,16 +8,15 @@ function [yp] = NetWork(X,mf,MR,Ac)
 % bMR: s*m
 % Ac: (n+1)*m
 
+% Parameter preparation before calculation
 [F, Aux] = mFun(X,mf);
 bMR = reMR(Aux,MR,size(F,1));
 
-
+% ANFIS five-layer operation
 O1 = F;
 O2 = exp(bMR'*log(O1+0.0001));
 O3 = O2./(ones(size(O2,1))*O2);
-
-O4 = (Ac'*[X;ones(1,size(X,2))])...
-    .*O3;
+O4 = (Ac'*[X;ones(1,size(X,2))]).*O3;
 O5 = sum(O4,1);
 
 yp = O5;

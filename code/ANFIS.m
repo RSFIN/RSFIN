@@ -16,16 +16,18 @@ for t = 1:epoch
     O1 = F;
     O2 = exp(bMR'*log(O1+0.001));
     O3 = O2./(ones(size(O2,1))*O2);
-    %后件参数估计
+    % Estimation of consequent parameters
     Ac = Structure_after(X,Y,O3);
     O4 = (Ac'*[X;ones(1,size(X,2))]).*O3;
     O5 = sum(O4,1);
     yp = O5;
-    %前件参数更新
+    
+    % Convergence condition
     mre(t) = sum(abs(Y-yp)./Y)/length(Y)*100;
     if mre(t) < 0.001
         break;
     end
+    % Premise parameter update
     [mf,vdw,sdw] = reMF(X,PD(X,F,Ac,bMR),yp-Y,mf,vdw,sdw,t);
 end
 mre(t:end) = mre(t);
@@ -71,12 +73,13 @@ for k = 1:N
     x = [x;xt];
     y = [y;Y(k)];
 end
-
+% Least squares estimation
 Ac = pinv(x'*x)*x'*y;
 Ac = reshape(Ac, n+1, m);
 
 end
 
+% Forward gradient calculation
 function dYdF = PD(X,F,Ac,bMR)
 %dYdF: s*N
 F = F + 0.001;
@@ -91,8 +94,10 @@ b = D4;
 dYdF = (q.*a)./(q.*F+b+0.001).^2;
 
 end
+
 function [mf,vdw,sdw] = reMF(X,dYdF,error,mf,vdw,sdw,t)
-%此处并未实现自适应求导不同隶属度函数(目前仅处理gaussmf）
+%The function of adaptive derivation with different membership degrees is 
+% not implemented here (currently only gaussmf is processed)
 s = 0;
 beta1 = 0.9;
 beta2 = 0.9;

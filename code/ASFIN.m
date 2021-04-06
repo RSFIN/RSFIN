@@ -1,25 +1,39 @@
 function [QMR, M] = ASFIN(X,mf,CluRe,NNN,ValX,ValY,TrainX,TrainY)
 
-QMR = [];
+% X: configuration set
+% mf: premise parameters
+% CluRe: configure component cluster centers
+% NNN: initial number of rules
+% ValX,ValY: validation sample set
+% TrainX,TrainY: train sample set
 
+% Initialize the rule matrix
+QMR = [];
 QMR = GenMR(QMR,mf,CluRe,ValX,NNN);
+% Initialize the mre
 tmre = TrainAndTest(TrainX,TrainY,ValX,ValY,mf,QMR);
 
+% Convergence mark
 flag = 0;
 M = zeros(1,100);
 for asd = 1:100
-    
+    % Convergence condition
     if flag >= 10
         break;
     end
+    
+    % Eliminate rules that contribute less
+    % AMR: Rule matrix for testing
     AMR = Update_MR([QMR, GenMR(QMR,mf,CluRe,TrainX,NNN)],X,mf);
-    
+    % Modify premise parameters
     [mf,~] = ANFIS(TrainX,TrainY,mf,AMR,1);
-    
+    % Eliminate rules that contribute less
     AMR = Update_MR(AMR,X,mf);
     
+    % Test network performance
     mre = TrainAndTest(TrainX,TrainY,ValX,ValY,mf,AMR);
     M(asd) = mre;
+    
     flag = flag + 1;
     if mre < tmre
         flag = 0;
@@ -28,9 +42,11 @@ for asd = 1:100
     end
     disp([num2str(asd),'/100, mre: ',num2str(tmre)]);
 end
+% Aligned output
 M(asd:end) = M(asd-1);
 end
 
+% Eliminate rules that contribute less
 function AMR = Update_MR(AMR,X,mf)
 socer = SocerOfMR(X(:,randi(size(X,2),100,1)),mf,AMR);
 
@@ -41,6 +57,7 @@ end
 AMR = Union(AMR);
 end
 
+% Network performance
 function mre = TrainAndTest(TrainX,TrainY,ValX,ValY,mf,AMR)
 [mf,Ac] = ANFIS(TrainX,TrainY,mf,AMR,1);
 
@@ -48,6 +65,7 @@ yp = NetWork(ValX,mf,AMR,Ac);
 mre = MRE(yp, ValY);
 end
 
+% Eliminate the same rules
 function MR = Union(MR)
 
 n = size(MR,1);
@@ -57,6 +75,7 @@ j(i-j >= 0) = [];
 MR(:,j) = [];
 end
 
+% Generate rules based on genetic algorithm
 function MR = GenMR(AMR,mf,CluRe,X,N)
 
 if isempty(AMR)
@@ -78,6 +97,7 @@ else
 end
 end
 
+% Calculate the rule contribution value
 function [socer, S] = SocerOfMR(X,mf,MR)
 
 [ss, O3] = O2(X,mf,MR);
@@ -91,6 +111,7 @@ end
 S = length(find(max(ss,[],1) > yeta))/size(X,2);
 end
 
+% ANFIS second layer return value
 function [O2, O3] = O2(X,mf,MR)
 
 [F, Aux] = mFun(X,mf);
@@ -102,6 +123,7 @@ O3 = O2./(ones(size(O2,1))*O2);
 
 end
 
+% ANFIS-Membership function value calculation
 function [FA, Aux] = mFun(X,mf)
 FA = [];
 for x_n = 1:size(X,2)
@@ -116,6 +138,7 @@ for x_n = 1:size(X,2)
 end
 end
 
+% ANFIS-rule matrix conversion
 function [bMR] = reMR(Aux,MR,s)
 
 [n,m] = size(MR);
@@ -129,6 +152,7 @@ end
 
 end
 
+% Calculate the size of a sigma range
 function yeta = Yeta(mf, MR)
 
 X_y = zeros(size(MR,1),1);
@@ -139,6 +163,7 @@ yeta = O2(X_y,mf,MR);
 
 end
 
+% Convert data into rules
 function [MR] = X2MR(X, mf)
 
 MR = zeros(size(X));
@@ -153,7 +178,6 @@ MR = MR - 1;
 end
 
 function [T,mf,AMR] = Cluster(X, CluRe, beta, m)
-
 
 T = zeros(size(X,2),1);
 [mf,~] = genMR0(X(:,1),1,CluRe,beta);
@@ -182,6 +206,7 @@ end
 
 end
 
+% Rule matrix score situation
 function socer = Reward(X, mf, AMR)
 
 T = zeros(1,size(X,2));

@@ -6,7 +6,7 @@ XY = csvread(['..\data\Data\',DataSetName,'_AllNumeric.csv'],1);
 
 X = XY(:,1:end-1)';
 Y = XY(:,end)';
-%去除单一变量
+% Remove single variable of performance value
 b = [];
 for i = 1:size(X,1)
     if length(unique(X(i,:))) == 1
@@ -14,8 +14,11 @@ for i = 1:size(X,1)
     end
 end
 X(b,:) = [];
+
+% Mean shift clustering to determine sample center.
 CluRe = MeanShift(X);
 
+% Determine the initial membership division.
 mf = X2mf(X, Y, CluRe);
 end
 

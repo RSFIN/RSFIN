@@ -1,5 +1,12 @@
 function y = MF(type,x,Config,fun)
 
+% type: Membership function category ['gaussmf', 'gbellmf', 'trapmf',
+% 'sigmf', 'trimf'].
+% x: Can be a vector.
+% Config: Membership function parameters.
+% fun: Output state: 0: Function expressions and corresponding parameters,
+% others: result.
+
 if nargin==3
     fun = 1;
 end
