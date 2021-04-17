@@ -1,3 +1,42 @@
+function  [mf,Ac,QMR,mre,N] = RSFIN(X,Y,mf,CluRe,k,p,N_Data,Classifier)
+
+% CluRe: Sample cluster center
+% k: Number of samples in the validation set (n)
+% p: Number of samples in the train set (n)
+% N_Data: Data set number
+% Classifier: Classifier status
+
+load('..\user_data\Configuration.mat');
+NNN = 2;% Initial number of rules
+if N_Data < 1 || N_Data > 11
+    ExpMRE = 50;
+else
+    ExpMRE = A(N_Data);% Expect MRE (used to eliminate bad experiments)
+end
+mre = 10000; % Initialize mre
+while mre>=ExpMRE %Eliminate bad experiments
+    
+    [n, N] = size(X);
+    Testpos = 1:N;
+    
+    [Valpos, TT, Testpos] = Sample(Testpos,k*n,p*n);%Validation set sampling and training set sampling
+    
+    ValX = X(:,Valpos); ValY = Y(Valpos);
+    TrainX = X(:,TT); TrainY = Y(TT);
+    TestX = X(:,Testpos);TestY = Y(Testpos);% Test set
+    
+    %
+    % Rule search
+    [QMR, ~] = ASFIN(X,mf,CluRe,NNN,ValX,ValY,TrainX,TrainY);
+    % Learn
+    [mf,Ac,~] = ANFIS([TrainX, ValX],[TrainY,ValY],mf,QMR,10);
+    % Validation
+    yp = NetWork(TestX,mf,QMR,Ac);
+    mre = MRE(yp, TestY);
+end
+N = N - length(Testpos);
+end
+
 function [QMR, M] = ASFIN(X,mf,CluRe,NNN,ValX,ValY,TrainX,TrainY)
 
 % X: configuration set
@@ -24,7 +63,7 @@ for asd = 1:100
     
     % Eliminate rules that contribute less
     % AMR: Rule matrix for testing
-    AMR = Update_MR([QMR, GenMR(QMR,mf,CluRe,TrainX,NNN)],X,mf);
+    AMR = Update_MR([QMR, GenMR(QMR,mf,CluRe,ValX,NNN)],X,mf);
     % Modify premise parameters
     [mf,~] = ANFIS(TrainX,TrainY,mf,AMR,1);
     % Eliminate rules that contribute less
@@ -40,7 +79,7 @@ for asd = 1:100
         tmre = mre;
         QMR = AMR;
     end
-    disp([num2str(asd),'/100, mre: ',num2str(tmre)]);
+    %     disp([num2str(asd),'/100, mre: ',num2str(tmre)]);
 end
 % Aligned output
 M(asd:end) = M(asd-1);
@@ -76,24 +115,29 @@ MR(:,j) = [];
 end
 
 % Generate rules based on genetic algorithm
-function MR = GenMR(AMR,mf,CluRe,X,N)
+function MR = GenMR(AMR,mf,CluRe,ValX,N)
 
 if isempty(AMR)
     MR = [];
-    q = randperm(min(size(X,2),N));
+    q = randperm(min(size(ValX,2),N));
     for i = 1:N
-        MR = [MR, X2MR(X(:,q(i)),mf)];
+        MR = [MR, X2MR(ValX(:,q(i)),mf)];
     end
     MR = Union(MR);
 else
-    pos = randperm(size(AMR,2));
-    MR = AMR(:,pos(1));
-    posi = randperm(size(MR,1));
-    
-    set = CluRe{posi(1)};
-    set(set == MR(posi(1))) = [];
-    newi = randperm(length(set));
-    MR(posi(1)) = newi(1);
+    QMR = [];
+    for i = 1:3
+        pos = randperm(size(AMR,2));
+        MR = AMR(:,pos(1));
+        posi = randperm(size(MR,1));
+        
+        set = CluRe{posi(1)};
+        set(set == MR(posi(1))) = [];
+        newi = randperm(length(set));
+        MR(posi(1)) = newi(1);
+        QMR = [QMR, MR];
+    end
+    MR = QMR;
 end
 end
 

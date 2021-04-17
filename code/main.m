@@ -1,63 +1,38 @@
 clc,clear,clf
 
-NNN = 6;% Initial number of rules
-ExpMRE = 15;% Expect MRE (used to eliminate bad experiments)
-for N_Data = 1:11
+
+for N_Data = 10:10
     [X, Y, CluRe, DataSetName, mf] = Setup(N_Data); % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'}
     SCORE = csvread(['..\user_data\result_',DataSetName,'.csv']);% Read log file
-    
-    %     pos = find(Y<5); % Performance separation experiment
-    %     X = X(:,pos);
-    %     Y = Y(pos);
-    if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7 %Randomly compress experiments with large amounts of data
-        pos = randperm(size(X,2));
-        X = X(:,pos(1:2000));
-        Y = Y(pos(1:2000));
-    end
     if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7||N_Data == 8 %Sampling number setting
-        k = 10;
-        p = 10;
+        k = 5;
+        p = 5;
     else
         k = 2;
         p = 2;
     end
     MMM = []; % MRE
-    for mmmm = 1:30
-        
+    for mmmm = 1:1
         tic
-        mre = 10000; % Initialize mre
-        while mre>=ExpMRE %Eliminate bad experiments
-            SCORE(mmmm, 1) = mmmm;
-            [n, N] = size(X);
-            Testpos = 1:N;
-            
-            [Valpos, Testpos] = Sample(Testpos,k*n);% Validation set sampling
-            [TT, Testpos] = Sample(Testpos,p*n);% Training set sampling
-            
-            ValX = X(:,Valpos); ValY = Y(Valpos);
-            TrainX = X(:,TT); TrainY = Y(TT);
-            TestX = X(:,Testpos);TestY = Y(Testpos);% Test set
-            
-            disp([DataSetName, ':', num2str(mmmm)]);
-            % Rule search
-            [QMR, S] = ASFIN(X,mf,CluRe,NNN,ValX,ValY,TrainX,TrainY);
-            % Learn
-            [mf,Ac,M] = ANFIS([TrainX, ValX],[TrainY,ValY],mf,QMR,100);
-            % Validation
-            yp = NetWork(TestX,mf,QMR,Ac);
-            mre = MRE(yp, TestY);
-        end
-        MMM = [MMM; [S,M]]; %MRE
+        fprintf([DataSetName, ': epoch = ', num2str(mmmm),' Running...']);
+                
+        [mf,Ac,MR,mre,N] = RSFIN(X,Y,mf,CluRe,k,p,N_Data);   
+        
+        fprintf(['\b\b\b\b\b\b\b\b\b\bFinish\n','mre = ', num2str(mre),...
+            ' Time cost: ',num2str(toc),' s\n']);
+        
+        SCORE(mmmm, 1) = mmmm;
         SCORE(mmmm, 2) = mre;
-        SCORE(mmmm, 3) = N - length(Testpos);
-        SCORE(mmmm, 4) = size(QMR,2);
+        SCORE(mmmm, 3) = N;
+        SCORE(mmmm, 4) = size(MR,2);
         SCORE(mmmm, 5) = toc;
         csvwrite(['..\user_data\result_',DataSetName,'.csv'],SCORE);
     end
 end
-mean(SCORE(:,2))
-std(SCORE(:,2))
-sum(SCORE(:,5))
+% Plot_Test(yp, TestY, DataSetName, mre, QMR, size(X,2) - length(Testpos))
+disp(['maen = ', num2str(mean(SCORE(:,2))),...
+      ' Margin = ',num2str(1.96*std(SCORE(:,2))/sqrt(SCORE(mmmm, 3))),...
+      ' Time(per epoch) = ',num2str(mean(SCORE(:,5)))]);
 %% boxplot
 Data = [];
 for N_Data = 1:11

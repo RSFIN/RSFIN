@@ -88,7 +88,7 @@ D2 = (1-bMR)*((Ac'*[X;ones(1,size(X,2))]).*exp(bMR'*log(F)));
 D3 = (bMR*exp(bMR'*log(F)))./F;
 D4 = (1-bMR)*exp(bMR'*log(F));
 
-q = D2.*D3./(D1+0.0001);
+q = D2.*D3./(D1+0.0001) - D4;
 a = D3;
 b = D4;
 dYdF = (q.*a)./(q.*F+b+0.001).^2;

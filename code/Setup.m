@@ -1,9 +1,11 @@
-function [X, Y, CluRe, DataSetName, mf] = Setup(num)
-
-DataSetNameSet = {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'};
-DataSetName = DataSetNameSet{num};
-XY = csvread(['..\data\Data\',DataSetName,'_AllNumeric.csv'],1);
-
+function [X, Y, CluRe, DataSetName, mf] = Setup(num,XY)
+if nargin == 1
+    DataSetNameSet = {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'};
+    DataSetName = DataSetNameSet{num};
+    XY = csvread(['..\data\Data\',DataSetName,'_AllNumeric.csv'],1);
+else
+    DataSetName = 'Custom_data_set';
+end
 X = XY(:,1:end-1)';
 Y = XY(:,end)';
 % Remove single variable of performance value
@@ -57,8 +59,8 @@ if exp(max(X)) == inf
 end
 minX = min(X);
 maxX = max(X);
-r = 1/49 * (maxX - minX);
-CluRe = linspace(minX,maxX,50);
+r = 1/9 * (maxX - minX);
+CluRe = linspace(minX,maxX,10);
 pCluRe = CluRe;
 
 while 1
