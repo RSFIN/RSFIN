@@ -1,5 +1,5 @@
-# ASFIN
-Architecture Search based Fuzzy Inference Network
+# RSFIN
+Rule Search based Fuzzy Inference Network
 
 An end-to-end model
 
