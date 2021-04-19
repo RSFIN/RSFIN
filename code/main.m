@@ -1,7 +1,7 @@
-clc,clear,clf
+clc,clear
 
 
-for N_Data = 10:10
+for N_Data = 1:1
     [X, Y, CluRe, DataSetName, mf] = Setup(N_Data); % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'}
     SCORE = csvread(['..\user_data\result_',DataSetName,'.csv']);% Read log file
     if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7||N_Data == 8 %Sampling number setting
