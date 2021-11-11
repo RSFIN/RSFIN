@@ -8,4 +8,5 @@ Debug in **main.m** (RSFIN) and **main2** (TwoLayer_RSFIN)
 * matlab version: 2017a
 
 Statistics of specific experimental results (30 times) view in **prediction_result**
-Serial Number|Time|Sampling Number|Rule Number|MRE
+
+Number|Time|Sampling Number|Rule Number|MRE
