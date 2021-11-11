@@ -9,4 +9,4 @@ Debug in **main.m** (RSFIN) and **main2** (TwoLayer_RSFIN)
 
 Statistics of specific experimental results (30 times) view in **prediction_result**
 
-Number|Time|Sampling Number|Rule Number|MRE
+Number|MRE|Sampling Number|Rule Number|Time
