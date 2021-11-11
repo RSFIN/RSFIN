@@ -2,7 +2,7 @@ clc,clear
 load('..\user_data\Configuration2.mat');
 for N_Data = 10:10
     [X, Y, CluRe, DataSetName, mf] = Setup(N_Data); % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'}
-    SCORE = csvread(['..\user_data\result_TwoLayer_',DataSetName,'.csv']);% Read log file
+    SCORE = csvread(['..\predicton_result\result_TwoLayer_',DataSetName,'.csv']);% Read log file
     
     if N_Data >= 1 && N_Data <= 11
         wall = B(1,N_Data);
@@ -34,7 +34,7 @@ for N_Data = 10:10
         end
         SCORE(mmmm, 4) = SizeMR;
         SCORE(mmmm, 5) = toc;
-        csvwrite(['..\user_data\result_TwoLayer_',DataSetName,'.csv'],SCORE);
+        csvwrite(['..\predicton_result\result_TwoLayer_',DataSetName,'.csv'],SCORE);
     end
 end
 

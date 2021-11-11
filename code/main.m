@@ -3,7 +3,7 @@ load('..\user_data\Configuration.mat');
 
 for N_Data = 11:11 % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'}
     [X, Y, CluRe, DataSetName, mf] = Setup(N_Data);
-    SCORE = csvread(['..\user_data\result_',DataSetName,'.csv']);% Read log file
+    SCORE = csvread(['..\predicton_result\result_',DataSetName,'.csv']);% Read log file
     if N_Data == 3||N_Data == 5||N_Data == 6||N_Data == 7||N_Data == 8 %Sampling number setting
         k = 8;
         p = 7;
@@ -25,7 +25,7 @@ for N_Data = 11:11 % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune'
         SCORE(Experiment_number, 3) = N;
         SCORE(Experiment_number, 4) = size(model.MR,2);
         SCORE(Experiment_number, 5) = toc;
-        csvwrite(['..\user_data\result_',DataSetName,'.csv'],SCORE);
+        csvwrite(['..\predicton_result\result_',DataSetName,'.csv'],SCORE);
     end  
 end
 
@@ -40,7 +40,7 @@ for N_Data = 1:11
         continue;
     end
     [X, Y, CluRe, DataSetName, mf] = Setup(N_Data); % {'x264','SQL','sac','LLVM','javagc','hsmgp','hipacc','Dune','BDBJ','BDBC','Apache'}
-    SCORE = csvread(['..\user_data\result_',DataSetName,'.csv']);
+    SCORE = csvread(['..\predicton_result\result_',DataSetName,'.csv']);
 %     SCORE = csvread(['..\user_data\result_Twolayer_',DataSetName,'.csv']);
     
     Data = [Data,  SCORE(:,2)];
