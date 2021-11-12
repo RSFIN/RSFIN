@@ -19,7 +19,9 @@ Debug in **main.m** (RSFIN) and **main2** (TwoLayer_RSFIN)
 
 To evaluate the prediction accuracy, we use the mean relative error (MRE), which is computed as,
 
-$MRE(C_{test},P_{test})=\frac{1}{|C_{test}|}\sum_{\textbf{c}_0\in C_{test}}\frac{|M(\textbf{c}_0)-P_0|}{P_0}\times 100$
+```text
+![1](http://latex.codecogs.com/svg.latex?MRE(C_{test},P_{test})=\frac{1}{|C_{test}|}\sum_{\textbf{c}_0\in C_{test}}\frac{|M(\textbf{c}_0)-P_0|}{P_0}\times 100)
+```
 
 where $C_{test}$ is the testing dataset, $M(\textbf{c}_0)$ is the predicted performance value of configuration $c$ generated using the model, $P_0$ is the actual performance value of configuration $c_0$. In the two tables below, Mean is the mean of the MREs seen in 30 experiments and Margin is the margin of the 95% confidence interval of the MREs in the 30 experiments. The results are obtained when evaluating RSFIN, DECART, SPLConqueror, DeepPerf on the Windows with Intel® CoreTMi7-8700 CPU @ 3.20GHz3.19GHz.
 
@@ -184,4 +186,3 @@ where $C_{test}$ is the testing dataset, $M(\textbf{c}_0)$ is the predicted perf
 <tr><td>2499</td><td>OW PBD(49, 7)</td><td>16</td><td>RD</td><td>17.13</td><td>2.22</td></tr>
 <tr><td>3261</td><td>PW RD</td><td>30.7</td><td>RD</td><td>15.40</td><td>2.05</td></tr>
 </table>
-
