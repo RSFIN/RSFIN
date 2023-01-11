@@ -159,7 +159,7 @@ To evaluate the performance improvement, we use the ![](http://latex.codecogs.co
 
 where, ![](http://latex.codecogs.com/svg.latex?C_{test}) represents the test configuration, and ![](http://latex.codecogs.com/svg.latex?P_{test}) is the corresponding performance. ![](http://latex.codecogs.com/svg.latex?M(\mathbf{c}_0)) is the predicted result of ![](http://latex.codecogs.com/svg.latex?\mathbf{c}_0), and ![](http://latex.codecogs.com/svg.latex?P_0) is the actual measurement of ![](http://latex.codecogs.com/svg.latex?\mathbf{c}_0).
 
-In the table below, we use three different measurement constraints to evaluate the impact of measurement effort. The results are obtained when evaluating RSFIN on a Windows 10 computer with Intel![](http:// latex.codecogs.com/svg.latex?\circledR) Core![](http://latex.codecogs.com/svg.latex?^{\mathrm{TM}}) i7-8700 CPU @ 3.20GHz 16GB RAM.
+In the table below, we use three different measurement constraints to evaluate the impact of measurement effort. The results are obtained when evaluating RSFIN on a Windows 10 computer with Intel![](http://latex.codecogs.com/svg.latex?\circledR) Core![](http://latex.codecogs.com/svg.latex?^{\mathrm{TM}}) i7-8700 CPU @ 3.20GHz 16GB RAM.
 
 
 
