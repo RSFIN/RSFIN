@@ -143,7 +143,7 @@ To run RSFIN, users need to prepare before the evaluation and then run the scrip
   - The data should be $n+1$ columns, where $n$ is the number of configuration options, and the $n+1$-th column is the performance (label).
   - The first row in the table is the header, and each remaining row is a piece of measured data.
 
-Specifically, for software systems under prediction, RSFIN will run with three different sample sizes and 30 experiments for each sample size. For example, if users want to evaluate RSFIN with with 5n pieces of data from the system Apache, the  modification of lines 111-113 in `main.py` will be:
+Specifically, for software systems under prediction, RSFIN will run with three different sample sizes and 30 experiments for each sample size. For example, if users want to evaluate RSFIN with with 5n pieces of data from the system Apache, the  modification of lines 137-139 in `main.py` will be:
 
 ```
 SYSTEM = 'Apache'
