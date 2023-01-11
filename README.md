@@ -155,7 +155,7 @@ The time cost of tuning for each experiment ranges from 20-200 minutes depending
 # Experimental Results
 To evaluate the performance improvement, we use the ![](http://latex.codecogs.com/svg.latex?%5Crm{Impro}), which is computed as,
 
-![](http://latex.codecogs.com/svg.latex?{%5Crm{MRE}}(C_{test},P_{test})=%5Cfrac{1}{\vert C_{test}\vert}\sum_{\mathbf{c}_0 \in C_{test}} \frac{\vert M(\mathbf{c}_0)-P_0 \vert}{P_0}%5Ctimes{100\%})
+![](http://latex.codecogs.com/svg.latex?{%5Crm{MRE}}(C_{test},P_{test})=%5Cfrac{1}{\vert{C_{test}}\vert}\sum_{\mathbf{c}_0\in{C_{test}}}\frac{\vert{M(\mathbf{c}_0)-P_0}\vert}{P_0}%5Ctimes{100\%})
 
 where, ![](http://latex.codecogs.com/svg.latex?C_{test}) represents the test configuration, and ![](http://latex.codecogs.com/svg.latex?P_{test}) is the corresponding performance. ![](http://latex.codecogs.com/svg.latex?M(\mathbf{c}_0)) is the predicted result of ![](http://latex.codecogs.com/svg.latex?\mathbf{c}_0), and ![](http://latex.codecogs.com/svg.latex?P_0) is the actual measurement of ![](http://latex.codecogs.com/svg.latex?\mathbf{c}_0).
 
