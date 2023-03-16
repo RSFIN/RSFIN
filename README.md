@@ -10,24 +10,26 @@ The essential difference between these methods is the way in which the underlyin
 
 # Prerequisites
 - Python 3.x
-- numpy 1.19.2
-- pandas 1.1.5
+- numpy
+- pandas
+- matplotlib
+- scipy
+- scikit-learn
+- tqdm
 
 # Installation
 RSFIN can be directly executed through source code:
 1. Download and install [Python 3.x](https://www.python.org/downloads/).
 
-2. Install numpy
+2. Clone RSFIN.
 
-   ``` $ pip install numpy```
+   ``` $ git clone http://github.com/RSFIN/RSFIN.git```
 
-3. Install pandas
+3. Install required packages
 
-   ``` $ pip install pandas```
+   ``` $ pip3 install -r require.txt```
 
-4. Clone RSFIN.
-
-   ``` $ clone http://github.com/RSFIN/RSFIN.git```
+   ​
 
 # Subject Systems
 Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/SPLConqueror/). RSFIN has been evaluated on 11 real-world configurable software systems:
@@ -150,16 +152,19 @@ SYSTEM = 'Apache'
 k = 2.5 
 PATH = 'data/' + SYSTEM + '.csv'
 ```
+
+Where k represents the size of training set/verification set (multiple of N). For example, when k=2.5, the size of training set and verification set are both 2.5N, so a total of 5N samples are required.
+
 The time cost of tuning for each experiment ranges from 20-200 minutes depending on the software system, the sample size, and the user's CPU. Typically, the time cost will be smaller when the software system has a smaller number of configurations or when the sample size is small. 
 
 # Experimental Results
 To evaluate the performance improvement, we use the ![](http://latex.codecogs.com/svg.latex?%5Crm{Impro}), which is computed as,
 
-![](http://latex.codecogs.com/svg.latex?{%5Crm{MRE}}(C_{test},P_{test})=%5Cfrac{1}{\vert{C_{test}}\vert}\sum_{\mathbf{c}_0\in{C_{test}}}\frac{\vert{M(\mathbf{c}_0)-P_0}\vert}{P_0}%5Ctimes{100\%})
+![](http://latex.codecogs.com/svg.latex?{%5Crm{MRE}}(C_{test},P_{test})=%5Cfrac{1}{\vert C_{test} \vert}\sum_{\mathbf{c}_0 \in C_{test}} \frac{\vert M(\mathbf{c}_0)-P_0 \vert}{P_0}%5Ctimes{100\%})
 
 where, ![](http://latex.codecogs.com/svg.latex?C_{test}) represents the test configuration, and ![](http://latex.codecogs.com/svg.latex?P_{test}) is the corresponding performance. ![](http://latex.codecogs.com/svg.latex?M(\mathbf{c}_0)) is the predicted result of ![](http://latex.codecogs.com/svg.latex?\mathbf{c}_0), and ![](http://latex.codecogs.com/svg.latex?P_0) is the actual measurement of ![](http://latex.codecogs.com/svg.latex?\mathbf{c}_0).
 
-In the table below, we use three different measurement constraints to evaluate the impact of measurement effort. The results are obtained when evaluating RSFIN on a Windows 10 computer with Intel![](http://latex.codecogs.com/svg.latex?%5CcircledR) Core![](http://latex.codecogs.com/svg.latex?^{\mathrm{TM}}) i7-8700 CPU @ 3.20GHz 16GB RAM.
+In the table below, we use three different measurement constraints to evaluate the impact of measurement effort. The results are obtained when evaluating RSFIN on a Windows 10 computer with Intel![](http://latex.codecogs.com/svg.latex?%5CcircledR) Core![](http://latex.codecogs.com/svg.latex?^%5Ctext{TM}) i7-8700 CPU @ 3.20GHz 16GB RAM.
 
 
 
