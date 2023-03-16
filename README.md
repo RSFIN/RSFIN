@@ -153,7 +153,7 @@ k = 2.5
 PATH = 'data/' + SYSTEM + '.csv'
 ```
 
-Where k represents the size of training set/verification set (multiple of N). For example, when k=2.5, the size of training set and verification set are both 2.5N, so a total of 5N samples are required.
+where k represents the size of training set/verification set (multiple of N). For example, when k=2.5, the size of training set and verification set are both 2.5N, so a total of 5N samples are required.
 
 The time cost of tuning for each experiment ranges from 20-200 minutes depending on the software system, the sample size, and the user's CPU. Typically, the time cost will be smaller when the software system has a smaller number of configurations or when the sample size is small. 
 
