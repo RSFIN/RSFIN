@@ -55,7 +55,7 @@ def Test1(XY, seed = 0, k = 1):
         anfis.MR = MR
     except:
         a = 1
-    anfis.Train(np.append(Train_index, Val_index), epoch=30, lam=lam)
+    anfis.Train(np.append(Train_index, Val_index), epoch=3, lam=lam)
     Yp = anfis.prediction(X[Rest_index])
 
     print(SYSTEM + ", N = " + str(len(Val_index) + len(Train_index)) + ", MRE = " + str(
@@ -79,14 +79,20 @@ def Test2(XY, seed = 0, k = 1, epcho = 500):
     :param k: training\validation set size (in n)
     '''
 
-    XY[:, -1] =  XY[:, -1] + 0.1*max(XY[:, -1]) # Reduce the zero sensitivity of MRE
+    # Reduce the zero sensitivity of MRE
+    XY[:, -1] =  XY[:, -1] + max(XY[:, -1])
     X = XY[:, 0:-1]
     Y = XY[:, -1]
 
+    if k <= 1:
+        lam = -0.1
+    elif k <= 2:
+        lam = -0.01
+    else:
+        lam = -0.00
     anfis = ANFIS(XY)
     n = X.shape[1]
 
-    lam = -0.00
     random.seed(seed)
 
     Val_index, Train_index, Rest_index = anfis.Sample(np.array(list(range(anfis.XY.shape[0]))), int(np.floor(k*n)), int(np.ceil(k*n)))
@@ -97,49 +103,56 @@ def Test2(XY, seed = 0, k = 1, epcho = 500):
     if k > 3:
         epcho = 100
     MR_b, Err = [], np.inf
-    for i in trange(epcho):
-        random.shuffle(R_index)
-        anfis.MR = anfis.X[R_index[:2]]
-        anfis.Train(Train_index, epoch=1, lam=lam)
-        Err_t = anfis.Err_Rate(anfis.prediction(X[Val_index]), Y[Val_index], "All")
+    for j in range(2,3):
+        print('\nNumber of rules: {}'.format(j))
+        for i in trange(epcho):
+            random.shuffle(R_index)
+            TTT = anfis.X[R_index[:j]]
 
-        if Err_t < Err:
-            MR_b, Err = anfis.MR, Err_t
-        if Err < 1:
+            anfis.MR = np.array([anfis.x2MR(x) for x in TTT])
+
+            anfis.Train(Train_index, epoch=1, lam=lam)
+            Err_t = anfis.Err_Rate(anfis.prediction(X[Val_index]), Y[Val_index], "All")
+
+            if Err_t < Err:
+                MR_b, Err = anfis.MR.copy(), Err_t.copy()
+            if Err < 0.1*j:
+                print('Complete rule construction in advance\n')
+                break
+        if Err < 0.1 * j:
             print('Complete rule construction in advance\n')
             break
     anfis.MR = MR_b
 
     # Training RSFIN
     print('\n Training model...')
-    anfis.Train(np.append(Train_index, Val_index), epoch=60, lam = lam)
+    anfis.Train(np.append(Train_index, Val_index), epoch=10, lam = lam)
     Yp = anfis.prediction(X[Rest_index])
 
     print(SYSTEM + ", N = " + str(len(Val_index) + len(Train_index)) + ", MRE = " + str(
         round(anfis.Err_Rate(Yp, Y[Rest_index], "MRE"), 3)) + ", R^2 = " + str(
         round(anfis.Err_Rate(Yp, Y[Rest_index], "R2"), 3)))
 
-    # return anfis.Err_Rate(Yp, Y[Rest_index], "MRE")
+    # return round(anfis.Err_Rate(Yp, Y[Rest_index], "MRE"), 3)
 
     # Drawing comparison diagram
-    plt.plot(np.array(list(range(len(Yp)))) + 1, Y[Rest_index])
-    plt.plot(np.array(list(range(len(Yp)))) + 1, Yp)
-    plt.legend(["real","prediction"])
-    plt.title(SYSTEM + ", N = " + str(len(Val_index) + len(Train_index)) + ", MRE = " + str(
-        round(anfis.Err_Rate(Yp, Y[Rest_index], "MRE"), 3)) + ", $R^2$ = " + str(
-        round(anfis.Err_Rate(Yp, Y[Rest_index], "R2"), 3)))
-    plt.xlabel('Configuration index')
-    plt.ylabel('Performance')
-    plt.show()
+    # plt.plot(np.array(list(range(len(Yp)))) + 1, Y[Rest_index])
+    # plt.plot(np.array(list(range(len(Yp)))) + 1, Yp)
+    # plt.legend(["real","prediction"])
+    # plt.title(SYSTEM + ", N = " + str(len(Val_index) + len(Train_index)) + ", MRE = " + str(
+    #     round(anfis.Err_Rate(Yp, Y[Rest_index], "MRE"), 3)) + ", $R^2$ = " + str(
+    #     round(anfis.Err_Rate(Yp, Y[Rest_index], "R2"), 3)))
+    # plt.xlabel('Configuration index')
+    # plt.ylabel('Performance')
+    # plt.show()
 
 if __name__ == '__main__':
 
-    SYSTEM = 'Apache'
-    k = 2.5
+    SYSTEM = 'BDBJ'
+    k = 0.5
     PATH = 'data/' + SYSTEM + '_AllNumeric.csv'
 
     df = pd.read_csv(PATH)
     XY = np.array(df)
-    Test2(XY, 0, k)
-
+    Test2(XY, 19, k)
 

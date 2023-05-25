@@ -11,6 +11,7 @@ from time import time
 import scipy.stats as st
 from scipy.optimize import leastsq
 from sklearn.metrics import r2_score
+import pandas as pd
 from sklearn.metrics import mean_absolute_percentage_error as mape
 class ANFIS:
 
@@ -44,7 +45,8 @@ class ANFIS:
 
         self.Ymax = np.max(self.Y)
         self.Ymin = np.min(self.Y)
-        self.Y = (self.Y - self.Ymin) / (self.Ymax - self.Ymin)
+        # self.Y = (self.Y - self.Ymin) / (self.Ymax - self.Ymin)
+        self.Y = self.Y / self.Ymax
 
         self.MeanShift()
         self.X2mf()
@@ -107,7 +109,8 @@ class ANFIS:
             , O_3)
         O_5 = np.sum(O_4, axis=0)
 
-        return O_5 * (self.Ymax - self.Ymin) + self.Ymin
+        # return O_5 * (self.Ymax - self.Ymin) + self.Ymin
+        return O_5 * self.Ymax
     def x2MR(self, x):
         MR = np.zeros(x.shape)
         for i in range(len(x)):
@@ -306,6 +309,7 @@ class ANFIS:
         x = []
         for i in range(len(r)):
             xi = self.mf[i].mf[int(r[i])].config[1]
+            xi = xi*(self.Xmax[i] - self.Xmin[i]) +  self.Xmin[i]
             x.append(xi)
         return np.array(x)
     def Update_MR(self, Updated_MR):
@@ -398,7 +402,7 @@ class ANFIS:
     def Err_Rate(self, Predicted_Y, Real_Y, outtype = "All"):
 
         R2 = (1 - r2_score(Real_Y, Predicted_Y)) * 100
-        MRE = np.mean(np.divide(np.abs(Real_Y-Predicted_Y), Real_Y+0.1)) * 100
+        MRE = np.mean(np.divide(np.abs(Real_Y-Predicted_Y), Real_Y+0.001)) * 100
 
         if outtype == "R2":
             return R2
@@ -409,6 +413,34 @@ class ANFIS:
         else:
             print("An error occurred while calculating the error!")
             return False
+
+    def __str__(self):
+        MR = np.array([self.r2x(r) for r in self.MR])
+        Ac = self.Ac.transpose()
+        res = []
+        for r in MR:
+            res.append(self.prediction(r))
+
+        df = pd.DataFrame()  # 或df = pd.DataFrame(columns=('A','B'))
+        for i in range(len(MR[0])):
+            z = dict()
+            z[' '] = ['option ' + str(i + 1)]
+            for j in range(MR.shape[0]):
+                t = round(Ac[j, i], 2)
+                if t < 0:
+                    space = ''
+                else:
+                    space = ' '
+                z['rule' + str(j + 1)] = [str(int(MR[j, i])) + ' (' + space + str(t) + ')']
+
+            df = df.append(pd.DataFrame(z), ignore_index=True)
+        z = dict()
+        z[' '] = ['PERF']
+        for i in range(MR.shape[0]):
+            z['rule' + str(i + 1)] = [round(float(res[i]), 2)]
+
+        df = df.append(pd.DataFrame(z), ignore_index=True)
+        return str(df)
     @classmethod
     def infocls(cls):
         print(cls)
