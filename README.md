@@ -50,7 +50,7 @@ Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/
             <td align="center">x264</td>
             <td align="center">Video Encoder</td>
             <td align="center">C</td>
-            <td align="center">16</td>
+            <td align="center">13</td>
             <td align="center">0</td>
             <td align="center">1152</td>
         </tr>
@@ -66,7 +66,7 @@ Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/
             <td align="center">LLVM</td>
             <td align="center">Compiler</td>
             <td align="center">C++</td>
-            <td align="center">11</td>
+            <td align="center">10</td>
             <td align="center">0</td>
             <td align="center">1024</td>
         </tr>
@@ -74,7 +74,7 @@ Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/
             <td align="center">Apache</td>
             <td align="center">Web Server</td>
             <td align="center">C</td>
-            <td align="center">9</td>
+            <td align="center">8</td>
             <td align="center">0</td>
             <td align="center">192</td>
         </tr>
@@ -82,7 +82,7 @@ Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/
             <td align="center">BDB-C</td>
             <td align="center">Database</td>
             <td align="center">C</td>
-            <td align="center">18</td>
+            <td align="center">16</td>
             <td align="center">0</td>
             <td align="center">2560</td>
         </tr>
@@ -90,7 +90,7 @@ Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/
             <td align="center">BDB-J</td>
             <td align="center">Database</td>
             <td align="center">Java</td>
-            <td align="center">26</td>
+            <td align="center">17</td>
             <td align="center">0</td>
             <td align="center">180</td>
         </tr>
@@ -130,7 +130,7 @@ Our experiments are based on the [SPLConqueror open dataset](http://www.fosd.de/
             <td align="center">Sac</td>
             <td align="center">Compiler</td>
             <td align="center">C</td>
-            <td align="center">53</td>
+            <td align="center">52</td>
             <td align="center">7</td>
             <td align="center">10^23</td>
         </tr>
