@@ -192,16 +192,16 @@ In the table below, we use three different measurement constraints to evaluate t
     <tr><td rowspan="3">SQLite(n = 39)</td><td>n</td><td>4.79</td><td>0.04</td><td>5.04</td><td>0.32</td><td>4.65</td><td>0.26</td></tr>
     <tr><td>3n</td><td>4.43</td><td>0.09</td><td>4.48</td><td>0.08</td><td>4.44</td><td>0.07</td></tr>
     <tr><td>5n</td><td>4.12</td><td>0.05</td><td>4.27</td><td>0.13</td><td>4.31</td><td>0.04</td></tr>
-    <tr><td rowspan="3">LLVM(n = 11)</td><td>n</td><td>6.52</td><td>0.23</td><td>5.09</td><td>0.80</td><td>4.65</td><td>0.53</td></tr>
+    <tr><td rowspan="3">LLVM(n = 10)</td><td>n</td><td>6.52</td><td>0.23</td><td>5.09</td><td>0.80</td><td>4.65</td><td>0.53</td></tr>
     <tr><td>3n</td><td>3.81</td><td>0.15</td><td>2.54</td><td>0.15</td><td>2.37</td><td>0.07</td></tr>
     <tr><td>5n</td><td>3.63</td><td>0.21</td><td>1.99</td><td>0.15</td><td>2.27</td><td>0.03</td></tr>
-    <tr><td rowspan="3">Apache(n = 9)</td><td>n</td><td>19.60</td><td>2.13</td><td>17.87</td><td>1.85</td><td>16.93</td><td>1.25</td></tr>
+    <tr><td rowspan="3">Apache(n = 8)</td><td>n</td><td>19.60</td><td>2.13</td><td>17.87</td><td>1.85</td><td>16.93</td><td>1.25</td></tr>
     <tr><td>3n</td><td>10.46</td><td>1.17</td><td>8.25</td><td>0.75</td><td>6.92</td><td>0.30</td></tr>
     <tr><td>5n</td><td>6.91</td><td>0.28</td><td>0.87</td><td>0.11</td><td>1.05</td><td>0.04</td></tr>
-    <tr><td rowspan="3">BDB-C(n = 18)</td><td>n</td><td>128.83</td><td>26.72</td><td>133.60</td><td>54.33</td><td>85.74</td><td>30.12</td></tr>
+    <tr><td rowspan="3">BDB-C(n = 16)</td><td>n</td><td>128.83</td><td>26.72</td><td>133.60</td><td>54.33</td><td>85.74</td><td>30.12</td></tr>
     <tr><td>3n</td><td>90.71</td><td>5.85</td><td>13.10</td><td>3.39</td><td>10.89</td><td>1.21</td></tr>
     <tr><td>5n</td><td>65.98</td><td>3.74</td><td>5.82</td><td>1.33</td><td>4.92</td><td>1.44</td></tr>
-    <tr><td rowspan="3">BDB-J(n = 26)</td><td>n</td><td>14.84</td><td>4.96</td><td>7.25</td><td>4.21</td><td>5.31</td><td>1.01</td></tr>
+    <tr><td rowspan="3">BDB-J(n = 17)</td><td>n</td><td>14.84</td><td>4.96</td><td>7.25</td><td>4.21</td><td>5.31</td><td>1.01</td></tr>
     <tr><td>3n</td><td>4.95</td><td>0.09</td><td>1.73</td><td>0.12</td><td>3.41</td><td>0.08</td></tr>
     <tr><td>5n</td><td>3.98</td><td>0.12</td><td>1.61</td><td>0.01</td><td>2.14</td><td>0.03</td></tr>
 </table>
@@ -233,7 +233,7 @@ In the table below, we use three different measurement constraints to evaluate t
     <tr><td rowspan="3">JavaGC(n = 35)</td><td>10n</td><td>22.51</td><td>2.73</td><td>26.53</td><td>5.87</td></tr>
     <tr><td>30n</td><td>20.54</td><td>5.84</td><td>24.93</td><td>3.42</td></tr>
     <tr><td>50n</td><td>15.98</td><td>7.13</td><td>20.11</td><td>3.17</td></tr>
-    <tr><td rowspan="3">SaC(n = 60)</td><td>10n</td><td>19.54</td><td>1.74</td><td>35.71</td><td>5.21</td></tr>
+    <tr><td rowspan="3">SaC(n = 59)</td><td>10n</td><td>19.54</td><td>1.74</td><td>35.71</td><td>5.21</td></tr>
     <tr><td>30n</td><td>17.42</td><td>6.51</td><td>32.21</td><td>3.54</td></tr>
     <tr><td>50n</td><td>15.64</td><td>3.29</td><td>31.95</td><td>3.67</td></tr>
 </table>
