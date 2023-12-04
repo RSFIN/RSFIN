@@ -240,6 +240,7 @@ In the table below, we use three different measurement constraints to evaluate t
 
 ### Cite
 
+```
 @article{rsfin,
 title = {RSFIN: A Rule Search-based Fuzzy Inference Network for performance prediction of configurable software systems},
 journal = {Journal of Systems and Software},
@@ -250,3 +251,4 @@ doi = {https://doi.org/10.1016/j.jss.2023.111913},
 url = {https://www.sciencedirect.com/science/article/pii/S0164121223003084},
 author = {Yufei Li and Liang Bao and Kaipeng Huang and Chase Wu and Xinwei Li},
 }
+```
