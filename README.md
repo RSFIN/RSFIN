@@ -238,3 +238,15 @@ In the table below, we use three different measurement constraints to evaluate t
     <tr><td>50n</td><td>15.64</td><td>3.29</td><td>31.95</td><td>3.67</td></tr>
 </table>
 
+### Cite
+
+@article{rsfin,
+title = {RSFIN: A Rule Search-based Fuzzy Inference Network for performance prediction of configurable software systems},
+journal = {Journal of Systems and Software},
+pages = {111913},
+year = {2023},
+issn = {0164-1212},
+doi = {https://doi.org/10.1016/j.jss.2023.111913},
+url = {https://www.sciencedirect.com/science/article/pii/S0164121223003084},
+author = {Yufei Li and Liang Bao and Kaipeng Huang and Chase Wu and Xinwei Li},
+}
